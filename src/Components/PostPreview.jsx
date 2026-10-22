@@ -1,12 +1,12 @@
 function PostPreview({ post }) {
   return (
-    <div className="card bg-base-100 shadow-sm ">
+    <div className="card bg-base-100 shadow-sm break-inside-avoid hover:scale-95 transition ease-in-out">
       {post?.image_url ? (
         <figure>
           <img
             src={post.image_url}
             alt="Shoes"
-            className="h-65 w-full object-cover"
+            className="h-auto w-full object-cover"
           />
         </figure>
       ) : (
@@ -26,12 +26,6 @@ function PostPreview({ post }) {
         <div className="flex justify-between items-start gap-8">
           <h2 className="card-title">{post?.title}</h2>
         </div>
-
-        <div
-          dangerouslySetInnerHTML={{
-            __html: post?.content.slice(0, 40) + "...",
-          }}
-        />
 
         <div>
           <div className="flex gap-2 justify-start items-start flex-wrap mb-1">

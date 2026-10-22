@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 
-import backgroundImage from "../assets/background.svg";
+import backgroundImage from "../assets/background-two.svg";
 
-import PageWrapper from "../Components/pageWrapper";
-import PostPreview from "../Components/PostPreview";
+import PageWrapper from "../Components/PageWrapper.jsx";
+import PostPreview from "../Components/PostPreview.jsx";
+import SideBar from "../Components/SideBar.jsx";
 
 function HomePage() {
   const [posts, setPosts] = useState([]);
@@ -37,11 +38,14 @@ function HomePage() {
           </div>
         </div>
       </div>
-      <hr className="border-base-100" />
-      <div className="w-full">
-        {posts.map((post) => {
-          return <PostPreview post={post} key={post.id} />;
-        })}
+
+      <div className="grid grid-cols-4 gap-5">
+        <div className="columns-1 sm:columns-2 md:columns-3 gap-5 space-y-5 w-full col-start-1 col-end-4">
+          {posts.map((post) => (
+            <PostPreview post={post} key={post.id} />
+          ))}
+        </div>
+        <SideBar className="col-start-4 col-end-5" />
       </div>
     </PageWrapper>
   );
