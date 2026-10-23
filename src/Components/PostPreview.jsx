@@ -22,10 +22,8 @@ function PostPreview({ post }) {
           </svg>
         </div>
       )}
-      <div className="card-body flex justify-between flex-col">
-        <div className="flex justify-between items-start gap-8">
-          <h2 className="card-title">{post?.title}</h2>
-        </div>
+      <div className="card-body flex justify-between flex-col gap-3">
+        <h2 className="card-title font-heading">{post?.title}</h2>
 
         <div>
           <div className="flex gap-2 justify-start items-start flex-wrap mb-1">
