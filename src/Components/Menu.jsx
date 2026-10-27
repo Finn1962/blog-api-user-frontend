@@ -1,4 +1,5 @@
 import { useScroll } from "../hooks/useScroll.js";
+import { Link } from "react-router-dom";
 
 function Menu() {
   const { scrollDirection } = useScroll();
@@ -45,7 +46,9 @@ function Menu() {
         </div>
       </div>
       <div className="navbar-center">
-        <a className="btn btn-ghost text-xl font-heading">.codersBlog</a>
+        <Link to={"/"} className="btn btn-ghost text-xl font-heading">
+          .codersBlog
+        </Link>
       </div>
       <div className="navbar-end">
         <div className="dropdown dropdown-end">

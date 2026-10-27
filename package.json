@@ -12,9 +12,11 @@
   "dependencies": {
     "@tailwindcss/vite": "^4.3.3",
     "daisyui": "^5.7.50",
+    "html-react-parser": "^6.1.9",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
     "react-router-dom": "^7.18.4",
+    "react-syntax-highlighter": "^16.1.2",
     "tailwindcss": "^4.3.3"
   },
   "devDependencies": {

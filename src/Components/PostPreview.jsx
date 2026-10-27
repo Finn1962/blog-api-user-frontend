@@ -1,12 +1,17 @@
+import { Link } from "react-router-dom";
+
 function PostPreview({ post }) {
   return (
-    <div className="card bg-base-100 shadow-sm break-inside-avoid hover:scale-95 transition ease-in-out">
+    <Link
+      to={`/post/${post.id}`}
+      className="card bg-base-100 shadow-sm break-inside-avoid hover:scale-95 transition ease-in-out"
+    >
       {post?.image_url ? (
         <figure>
           <img
             src={post.image_url}
             alt="Shoes"
-            className="h-auto w-full object-cover"
+            className="h-auto w-full object-cover max-h-100"
           />
         </figure>
       ) : (
@@ -34,7 +39,7 @@ function PostPreview({ post }) {
           </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 }
 

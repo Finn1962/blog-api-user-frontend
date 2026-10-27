@@ -15,6 +15,7 @@ function HomePage() {
   const [currentPaginationNumber, setCurrentPaginationNumber] = useState(0);
   const [paginationTotalNumber, setPaginationTotalNumber] = useState(0);
   const elementsOnEachSlide = 10;
+  const viewHeight = window.innerHeight;
 
   useEffect(() => {
     debounce(async () => {
@@ -24,17 +25,22 @@ function HomePage() {
           &skip=${currentPaginationNumber * elementsOnEachSlide}&take=${elementsOnEachSlide}`,
         );
         const result = await response.json();
-        console.log(elementsOnEachSlide);
-        console.log(result.totalPostsNumber);
         setPaginationTotalNumber(
           Math.ceil(result.totalPostsNumber / elementsOnEachSlide),
         );
         setPosts(result.posts);
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     });
   }, [searchValue, currentPaginationNumber]);
+
+  function scrollDown() {
+    window.scrollBy({
+      top: viewHeight,
+      behavior: "smooth",
+    });
+  }
 
   return (
     <PageWrapper>
@@ -52,7 +58,12 @@ function HomePage() {
               excepturi exercitationem quasi. In deleniti eaque aut repudiandae
               et a id nisi.
             </p>
-            <button className="btn btn-primary font-heading">Let's go</button>
+            <button
+              className="btn btn-primary font-heading"
+              onClick={scrollDown}
+            >
+              Let's go
+            </button>
           </div>
         </div>
       </div>

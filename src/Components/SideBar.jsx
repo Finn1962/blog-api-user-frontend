@@ -10,7 +10,10 @@ function SideBar({ className, searchValue, setSearchValue }) {
     >
       <div className="flex justify-between sm:items-center items-start sm:flex-row flex-col  gap-3">
         <RandomButton className="lg:hidden mt-0 inline-flex" />
-        <ResetButton className="lg:hidden mt-0 inline-flex" />
+        <ResetButton
+          className="lg:hidden mt-0 inline-flex"
+          setSearchValue={setSearchValue}
+        />
       </div>
 
       <fieldset className="fieldset">
@@ -62,7 +65,10 @@ function SideBar({ className, searchValue, setSearchValue }) {
       </div>
 
       <RandomButton className="lg:inline-flex hidden mt-10" />
-      <ResetButton className="lg:inline-flex hidden mt-2" />
+      <ResetButton
+        className="lg:inline-flex hidden mt-2"
+        setSearchValue={setSearchValue}
+      />
     </aside>
   );
 }
@@ -77,11 +83,11 @@ function RandomButton({ className }) {
         xmlns="http://www.w3.org/2000/svg"
         className="h-6"
       >
-        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+        <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
         <g
           id="SVGRepo_tracerCarrier"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         ></g>
         <g id="SVGRepo_iconCarrier">
           <path
@@ -98,9 +104,12 @@ function RandomButton({ className }) {
   );
 }
 
-function ResetButton({ className }) {
+function ResetButton({ className, setSearchValue }) {
   return (
-    <button className={`btn btn-primary  font-heading ${className}`}>
+    <button
+      className={`btn btn-primary  font-heading ${className}`}
+      onClick={() => setSearchValue("")}
+    >
       Reset search
       <svg
         viewBox="0 0 48 48"
@@ -108,27 +117,27 @@ function ResetButton({ className }) {
         xmlns="http://www.w3.org/2000/svg"
         className="h-6"
       >
-        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+        <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
         <g
           id="SVGRepo_tracerCarrier"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         ></g>
         <g id="SVGRepo_iconCarrier">
-          <rect width="48" height="48" fill="white" fill-opacity="0.01"></rect>
+          <rect width="48" height="48" fill="white" fillOpacity="0.01"></rect>
           <path
             d="M36.7279 36.7279C33.4706 39.9853 28.9706 42 24 42C14.0589 42 6 33.9411 6 24C6 14.0589 14.0589 6 24 6C28.9706 6 33.4706 8.01472 36.7279 11.2721C38.3859 12.9301 42 17 42 17"
             stroke="#000000"
-            stroke-width="4"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeWidth="4"
+            strokeLinecap="round"
+            strokeLinejoin="round"
           ></path>
           <path
             d="M42 8V17H33"
             stroke="#000000"
-            stroke-width="4"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeWidth="4"
+            strokeLinecap="round"
+            strokeLinejoin="round"
           ></path>
         </g>
       </svg>
