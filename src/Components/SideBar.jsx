@@ -6,7 +6,7 @@ function SideBar({ className, searchValue, setSearchValue }) {
   return (
     <aside
       className={`${scrollDirection === "up" ? "top-20" : "top-5"} lg:sticky lg:h-125 transition-all duration-300 ease-out flex flex-col gap-3 bg-base-200 
-      w-full ps-4 pe-4 pt-2 pb-2   ${className}`}
+      w-full ${className}`}
     >
       <div className="flex justify-between sm:items-center items-start sm:flex-row flex-col  gap-3">
         <RandomButton className="lg:hidden mt-0 inline-flex" />

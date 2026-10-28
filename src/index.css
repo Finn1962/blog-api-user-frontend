@@ -81,16 +81,19 @@
 .content-container h1 {
   font-size: 1.5rem;
   font-weight: bold;
+  margin-bottom: 5px;
 }
 
 .content-container h2 {
   font-size: 1.25rem;
   font-weight: bold;
+  margin-bottom: 5px;
 }
 
 .content-container h3 {
   font-size: 1rem;
   font-weight: bold;
+  margin-bottom: 5px;
 }
 
 .content-container h1:empty,
@@ -123,4 +126,12 @@
 .content-container pre {
   background-color: var(--color-base-100);
   padding: 5px 10px;
+}
+
+.syntax-highlighter {
+  background-color: var(--color-base-100) !important;
+}
+
+.syntax-highlighter .react-syntax-highlighter-line-number {
+  color: var(--color-base-content) !important;
 }

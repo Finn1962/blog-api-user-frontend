@@ -1,3 +1,5 @@
+import Tag from "../Components/Tag";
+
 import { Link } from "react-router-dom";
 
 function PostPreview({ post }) {
@@ -41,10 +43,6 @@ function PostPreview({ post }) {
       </div>
     </Link>
   );
-}
-
-function Tag({ tag }) {
-  return <span className="badge badge-primary">{tag.content}</span>;
 }
 
 export default PostPreview;

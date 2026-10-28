@@ -10,7 +10,7 @@ import PostPreview from "../Components/PostPreview.jsx";
 import SideBar from "../Components/SideBar.jsx";
 
 function HomePage() {
-  const [posts, setPosts] = useState([]);
+  const [posts, setPosts] = useState(null);
   const [searchValue, setSearchValue] = useState("");
   const [currentPaginationNumber, setCurrentPaginationNumber] = useState(0);
   const [paginationTotalNumber, setPaginationTotalNumber] = useState(0);
@@ -20,6 +20,7 @@ function HomePage() {
   useEffect(() => {
     debounce(async () => {
       try {
+        setPosts(null);
         const response = await fetch(
           `http://localhost:3000/post?searchValue=${searchValue}
           &skip=${currentPaginationNumber * elementsOnEachSlide}&take=${elementsOnEachSlide}`,
@@ -52,7 +53,9 @@ function HomePage() {
             className="xl:max-w-4xl max-w-2xl"
           />
           <div>
-            <h1 className="text-5xl font-bold font-heading">.codersBlog</h1>
+            <h1 className="sm:text-5xl text-3xl font-bold font-heading ">
+              .codersBlog
+            </h1>
             <p className="py-6 font-light">
               Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda
               excepturi exercitationem quasi. In deleniti eaque aut repudiandae
@@ -69,27 +72,40 @@ function HomePage() {
       </div>
 
       <SideBar
-        className="col-start-4 col-end-5 lg:hidden block mb-3"
+        className="col-start-4 col-end-5 lg:hidden block mb-7"
         searchValue={searchValue}
         setSearchValue={setSearchValue}
       />
-      <div className="grid grid-cols-4 gap-5">
-        {posts.length > 0 ? (
+      <div className="grid grid-cols-4 gap-5 w-full">
+        {posts &&
+          (posts.length > 0 ? (
+            <div className="columns-1 sm:columns-2 md:columns-3 gap-5 space-y-5 w-full col-start-1 lg:col-end-4 col-end-5">
+              {posts.map((post) => (
+                <PostPreview post={post} key={post.id} />
+              ))}
+            </div>
+          ) : (
+            <div className="h-90 col-start-1 lg:col-end-4 col-end-5 flex lg:flex-row-reverse flex-col justify-center items-center lg:gap-8">
+              <img src={cupImage} className="h-full lg:mb-5" />
+              <h3 className="font-bold text-xl font-heading">
+                Oh! No reusults found.
+              </h3>
+            </div>
+          ))}
+
+        {!posts && (
           <div className="columns-1 sm:columns-2 md:columns-3 gap-5 space-y-5 w-full col-start-1 lg:col-end-4 col-end-5">
-            {posts.map((post) => (
-              <PostPreview post={post} key={post.id} />
-            ))}
-          </div>
-        ) : (
-          <div className="h-90 col-start-1 lg:col-end-4 col-end-5 flex lg:flex-row-reverse flex-col justify-center items-center lg:gap-8">
-            <img src={cupImage} className="h-full lg:mb-5" />
-            <h3 className="font-bold text-xl font-heading">
-              Oh! No reusults found.
-            </h3>
+            <Skeleton />
+            <Skeleton />
+            <Skeleton />
+            <Skeleton />
+            <Skeleton />
+            <Skeleton />
           </div>
         )}
+
         <SideBar
-          className="col-start-4 col-end-5 lg:flex hidden"
+          className="col-start-4 col-end-5 lg:flex hidden ps-4 pe-4 pt-2 pb-2"
           searchValue={searchValue}
           setSearchValue={setSearchValue}
         />
@@ -109,6 +125,19 @@ function HomePage() {
         ))}
       </div>
     </PageWrapper>
+  );
+}
+
+function Skeleton() {
+  return (
+    <div className="break-inside-avoid w-full">
+      <div className="flex flex-col gap-4 w-full">
+        <div className="skeleton h-50 w-full"></div>
+        <div className="skeleton h-4 w-3/4"></div>
+        <div className="skeleton h-4 w-full"></div>
+        <div className="skeleton h-4 w-full"></div>
+      </div>
+    </div>
   );
 }
 
