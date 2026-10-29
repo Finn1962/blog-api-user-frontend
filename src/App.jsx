@@ -4,6 +4,7 @@ import HomePage from "./Pages/HomePage.jsx";
 import LoginPage from "./Pages/LoginPage.jsx";
 import PostPage from "./Pages/PostPage.jsx";
 import ProfilePage from "./Pages/ProfilePage.jsx";
+import RegisterPage from "./Pages/RegisterPage.jsx";
 import Menu from "./Components/Menu.jsx";
 import Footer from "./Components/Footer.jsx";
 
@@ -16,8 +17,9 @@ function App() {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/post/:id" element={<PostPage />} />
-            <Route path="/login" element={<LoginPage />} />
             <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
           </Routes>
           <Footer />
         </div>

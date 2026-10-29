@@ -18,7 +18,7 @@ function ProfilePage() {
 
   const navigate = useNavigate();
   const { authFetch } = useAuthFetch();
-  const { profile } = useProfile();
+  const { profile, setProfile } = useProfile();
   const { addInitialValues, addInitialValue, hasChanged } = useFormChanges();
 
   const profileImageRef = useRef(null);
@@ -83,7 +83,7 @@ function ProfilePage() {
       method: "PUT",
       body: formData,
       stringifyBody: false,
-      callback: (result) => {
+      callback: async (result) => {
         if (result.message === "User data successfully changed") {
           setCurrentPasswordValue("");
           setNewPasswordValue("");
@@ -95,6 +95,12 @@ function ProfilePage() {
           });
           if (profileImageValue)
             addInitialValue("profileImageValue", profileImageValue);
+          await authFetch({
+            url: "http://localhost:3000/profile",
+            callback: (result) => {
+              setProfile(result.userData);
+            },
+          });
         }
 
         if (result.errors) setErrors(result.errors);

@@ -73,7 +73,10 @@ function Login() {
                   value={passwordValue}
                   onChange={(event) => setPasswordValue(event.target.value)}
                 />
-                <button className="btn mt-2" onClick={() => sendLoginRequest()}>
+                <button
+                  className="btn btn-primary mt-2"
+                  onClick={() => sendLoginRequest()}
+                >
                   Login
                 </button>
                 {error !== "" && (
