@@ -1,0 +1,310 @@
+import { useState, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useFormChanges } from "../hooks/useFormChanges.js";
+import { useAuthFetch } from "../hooks/useAuthFetch.js";
+import { useProfile } from "../Contexts/ProfileContext.jsx";
+import PageWrapper from "../Components/PageWrapper.jsx";
+import ToggleSwitch from "../Components/ToggleSwitch.jsx";
+
+function ProfilePage() {
+  const [createdAtValue, setCreatedAtValue] = useState(null);
+  const [usernameValue, setUsernameValue] = useState("");
+  const [currentPasswordValue, setCurrentPasswordValue] = useState("");
+  const [newPasswordValue, setNewPasswordValue] = useState("");
+  const [confirmNewPasswordValue, setConfirmNewPasswordValue] = useState("");
+  const [emailNotificationValue, setEmailNotificationValue] = useState(false);
+  const [profileImageValue, setProfileImageValue] = useState();
+  const [errors, setErrors] = useState([]);
+
+  const navigate = useNavigate();
+  const { authFetch } = useAuthFetch();
+  const { profile } = useProfile();
+  const { addInitialValues, addInitialValue, hasChanged } = useFormChanges();
+
+  const profileImageRef = useRef(null);
+
+  const imageSrc = profileImageValue
+    ? URL.createObjectURL(profileImageValue)
+    : null;
+
+  useEffect(() => {
+    (async () => {
+      if (!profile) return;
+
+      setCreatedAtValue(
+        new Date(profile.created_at).toLocaleDateString("de-DE"),
+      );
+      setUsernameValue(profile.username);
+      setEmailNotificationValue(profile.email_notifications);
+
+      addInitialValues({
+        usernameValue: profile.username,
+        newPasswordValue: "",
+        emailNotificationValue: profile.email_notifications,
+      });
+
+      if (profile.profile_image_url) {
+        try {
+          const response = await fetch(profile.profile_image_url);
+          const blob = await response.blob();
+          const file = new File(
+            [blob],
+            profile.profile_image_url || "image.jpg",
+            {
+              type: blob.type,
+            },
+          );
+
+          setProfileImageValue(file);
+          addInitialValue("profileImageValue", file);
+          if (profileImageRef.current) {
+            const dataTransfer = new DataTransfer();
+            dataTransfer.items.add(file);
+            profileImageRef.current.files = dataTransfer.files;
+          }
+        } catch (error) {
+          console.error(error);
+        }
+      }
+    })();
+  }, [profile]);
+
+  function uploadProfileData() {
+    const formData = new FormData();
+    formData.append("username", usernameValue);
+    formData.append("currentPassword", currentPasswordValue);
+    formData.append("newPassword", newPasswordValue);
+    formData.append("confirmNewPassword", confirmNewPasswordValue);
+    formData.append("emailNotifications", emailNotificationValue);
+    formData.append("image", profileImageValue);
+
+    authFetch({
+      url: "http://localhost:3000/profile",
+      method: "PUT",
+      body: formData,
+      stringifyBody: false,
+      callback: (result) => {
+        if (result.message === "User data successfully changed") {
+          setCurrentPasswordValue("");
+          setNewPasswordValue("");
+          setConfirmNewPasswordValue("");
+          addInitialValues({
+            usernameValue: usernameValue,
+            newPasswordValue: "",
+            emailNotificationValue: emailNotificationValue,
+          });
+          if (profileImageValue)
+            addInitialValue("profileImageValue", profileImageValue);
+        }
+
+        if (result.errors) setErrors(result.errors);
+        else setErrors([]);
+      },
+    });
+  }
+
+  return (
+    <PageWrapper>
+      <div className="w-full max-w-5xl bg-base-100 mt-20">
+        <button
+          onClick={() => navigate(-1)}
+          className="btn bg-base-100 border-none"
+        >
+          ← Back
+        </button>
+        <div className="p-3 pt-0">
+          <div className="grid md:grid-cols-2 grid-cols-1 gap-5">
+            <div className="z-10 w-full h-full flex justify-center items-center aspect-square overflow-hidden relative">
+              {imageSrc && (
+                <button
+                  className="btn btn-circle boder-base-100 p-2 w-10 absolute right-5 top-5 z-20"
+                  onClick={() => {
+                    setProfileImageValue();
+                    profileImageRef.current.value = null;
+                  }}
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="currentColor"
+                    className="bi bi-x w-full opacity-75"
+                    viewBox="0 0 16 16"
+                  >
+                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
+                  </svg>
+                </button>
+              )}
+              <label
+                htmlFor="profile_image"
+                className="h-full absolute top-0 left-0 bottom-0 right-0 z-10 cursor-pointer hover:bg-base-300 opacity-10 "
+              ></label>
+              <input
+                className="hidden "
+                type="file"
+                ref={profileImageRef}
+                onChange={(event) =>
+                  setProfileImageValue(event.target.files[0])
+                }
+                id="profile_image"
+              />
+              {imageSrc ? (
+                <img src={imageSrc} className="object-cover h-full w-full" />
+              ) : (
+                <div className="h-full bg-accent p-2">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="currentColor"
+                    className="bi bi-person-fill h-full invert opacity-20"
+                    viewBox="0 0 16 16"
+                  >
+                    <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6" />
+                  </svg>
+                </div>
+              )}
+            </div>
+            <div className="flex flex-col justify-between items-start gap-4">
+              <div className="flex justify-between items-center w-full">
+                <p className="text-primary font-semibold">
+                  Hello {usernameValue}
+                </p>
+                <p className="text-xs opacity-35">
+                  Member since: {createdAtValue}
+                </p>
+              </div>
+              <div className="w-full">
+                <fieldset className="fieldset">
+                  <legend className="fieldset-legend">Username</legend>
+                  <input
+                    type="text"
+                    className="input w-full bg-base-300"
+                    placeholder="Max"
+                    value={usernameValue}
+                    onChange={(event) => setUsernameValue(event.target.value)}
+                  />
+                  {errors.some(
+                    (error) => error.msg === "Username is required",
+                  ) && (
+                    <p className="text-error font-semibold">
+                      Username is required
+                    </p>
+                  )}
+                </fieldset>
+                <fieldset className="fieldset">
+                  <legend className="fieldset-legend">Current password</legend>
+                  <input
+                    type="password"
+                    className="input w-full bg-base-300"
+                    placeholder="⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅"
+                    value={currentPasswordValue}
+                    onChange={(event) =>
+                      setCurrentPasswordValue(event.target.value)
+                    }
+                  />
+                  {errors.some(
+                    (error) => error.msg === "Current passwords is required",
+                  ) && (
+                    <p className="text-error font-semibold">
+                      Current passwords is required
+                    </p>
+                  )}
+                  {errors.some((error) => error.msg === "Wrong password") && (
+                    <p className="text-error font-semibold">Wrong password</p>
+                  )}
+                </fieldset>
+                <fieldset className="fieldset">
+                  <legend className="fieldset-legend">New password</legend>
+                  <input
+                    type="password"
+                    className="input w-full bg-base-300"
+                    placeholder="⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅"
+                    value={newPasswordValue}
+                    onChange={(event) =>
+                      setNewPasswordValue(event.target.value)
+                    }
+                  />
+
+                  {errors.some(
+                    (error) => error.msg === "New password is required",
+                  ) && (
+                    <p className="text-error font-semibold">
+                      New password is required
+                    </p>
+                  )}
+                  {errors.some(
+                    (error) =>
+                      error.msg ===
+                      "New password must be between 8 and 32 characters",
+                  ) && (
+                    <p className="text-error font-semibold">
+                      New password must be between 8 and 32 characters
+                    </p>
+                  )}
+                </fieldset>
+                <fieldset className="fieldset">
+                  <legend className="fieldset-legend">
+                    Confirm new password
+                  </legend>
+                  <input
+                    type="password"
+                    className="input w-full bg-base-300"
+                    placeholder="⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅"
+                    value={confirmNewPasswordValue}
+                    onChange={(event) =>
+                      setConfirmNewPasswordValue(event.target.value)
+                    }
+                  />
+                  {errors.some(
+                    (error) => error.msg === "New password must be confirmed",
+                  ) && (
+                    <p className="text-error font-semibold">
+                      New password must be confirmed
+                    </p>
+                  )}
+                  {errors.some(
+                    (error) => error.msg === "New password must match",
+                  ) && (
+                    <p className="text-error font-semibold">
+                      New password must match
+                    </p>
+                  )}
+                </fieldset>
+              </div>
+              <div className="w-full">
+                <fieldset className="fieldset">
+                  <legend className="fieldset-legend">
+                    Receive email notifications when new posts are published.
+                  </legend>
+                  <ToggleSwitch
+                    emailNotificationValue={emailNotificationValue}
+                    setEmailNotificationValue={setEmailNotificationValue}
+                  />
+                </fieldset>
+              </div>
+              <div className="w-full">
+                <fieldset className="fieldset">
+                  <button
+                    className="btn btn-block btn-primary"
+                    disabled={
+                      hasChanged({
+                        usernameValue,
+                        newPasswordValue,
+                        emailNotificationValue,
+                        profileImageValue,
+                      })
+                        ? false
+                        : true
+                    }
+                    onClick={uploadProfileData}
+                  >
+                    Save changes
+                  </button>
+                </fieldset>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </PageWrapper>
+  );
+}
+
+export default ProfilePage;

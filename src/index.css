@@ -134,4 +134,5 @@
 
 .syntax-highlighter .react-syntax-highlighter-line-number {
   color: var(--color-base-content) !important;
+  opacity: 0.3;
 }

@@ -1,14 +1,18 @@
 import { useState } from "react";
+import { useAuthFetch } from "../hooks/useAuthFetch";
 import { useNavigate } from "react-router-dom";
+import { useProfile } from "../Contexts/ProfileContext";
 import { Link } from "react-router-dom";
 import PageWrapper from "../Components/PageWrapper";
 
 function Login() {
   const [emailValue, setEmailValue] = useState("");
   const [passwordValue, setPasswordValue] = useState("");
-  const [error, setError] = useState([]);
+  const [error, setError] = useState("");
 
   const navigate = useNavigate();
+  const { authFetch } = useAuthFetch();
+  const { setProfile } = useProfile();
 
   async function sendLoginRequest() {
     try {
@@ -24,8 +28,16 @@ function Login() {
         }),
       });
       const result = await response.json();
-      console.log(result);
-      if (result.message === "Login successful") navigate("/");
+      if (result.message === "Login failed") setError(result.errors[0]);
+      if (result.message === "Login successful") {
+        await authFetch({
+          url: "http://localhost:3000/profile",
+          callback: (result) => {
+            setProfile(result.userData);
+          },
+        });
+        navigate("/");
+      }
     } catch (error) {
       console.error(error);
     }
@@ -64,6 +76,9 @@ function Login() {
                 <button className="btn mt-2" onClick={() => sendLoginRequest()}>
                   Login
                 </button>
+                {error !== "" && (
+                  <p className="text-error font-bold mt-1">{error}</p>
+                )}
                 <div className="flex flex-col sm:flex-row justify-start items-start sm:items-center gap-0 sm:gap-2 mt-2">
                   <a className="link link-hover opacity-70 hover:opacity-100 transition-all ">
                     Forgot your password

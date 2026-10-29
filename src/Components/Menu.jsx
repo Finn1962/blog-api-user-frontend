@@ -2,11 +2,18 @@ import { useScroll } from "../hooks/useScroll.js";
 import { Link } from "react-router-dom";
 import { useProfile } from "../Contexts/ProfileContext.jsx";
 import { useNavigate } from "react-router-dom";
+import { useAuthFetch } from "../hooks/useAuthFetch.js";
 
 function Menu() {
-  const { profile } = useProfile();
+  const { profile, setProfile } = useProfile();
   const { scrollDirection } = useScroll();
   const navigate = useNavigate();
+  const { authFetch } = useAuthFetch();
+
+  function logout() {
+    authFetch({ url: "http://localhost:3000/logout" });
+    setProfile(null);
+  }
 
   return (
     <div
@@ -44,12 +51,26 @@ function Menu() {
           </ul>
         </div>
         <div className="sm:block hidden">
-          <Link to="/login" className="btn btn-ghost font-heading">
-            Login
-          </Link>
-          <Link to="/register" className="btn btn-ghost font-heading">
-            Register
-          </Link>
+          {profile ? (
+            <a
+              onClick={() => {
+                navigate("/");
+                logout();
+              }}
+              className="btn btn-ghost font-heading"
+            >
+              Logout
+            </a>
+          ) : (
+            <Link to="/login" className="btn btn-ghost font-heading">
+              Login
+            </Link>
+          )}
+          {!profile && (
+            <Link to="/register" className="btn btn-ghost font-heading">
+              Register
+            </Link>
+          )}
         </div>
       </div>
       <div className="navbar-center">
@@ -60,7 +81,7 @@ function Menu() {
       <div className="navbar-end">
         <div
           className="dropdown dropdown-end cursor-pointer"
-          onClick={() => !profile && navigate("/login")}
+          onClick={() => (profile ? navigate("/profile") : navigate("/login"))}
         >
           <div
             tabIndex={0}
@@ -71,7 +92,7 @@ function Menu() {
               {profile ? (
                 <img
                   alt="Tailwind CSS Navbar component"
-                  src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
+                  src={profile.profile_image_url}
                 />
               ) : (
                 <svg
@@ -85,20 +106,6 @@ function Menu() {
               )}
             </div>
           </div>
-
-          {profile && (
-            <ul
-              tabIndex={-1}
-              className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow "
-            >
-              <li>
-                <a>Profile</a>
-              </li>
-              <li>
-                <a>Logout</a>
-              </li>
-            </ul>
-          )}
         </div>
       </div>
     </div>

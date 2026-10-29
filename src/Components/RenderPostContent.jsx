@@ -20,8 +20,6 @@ function RenderPostContent({ htmlContent, usedLanguage }) {
     C_SHARP: "csharp",
   };
 
-  console.log(usedLanguage);
-
   const options = {
     replace: (domNode) => {
       if (domNode.name === "pre") {
