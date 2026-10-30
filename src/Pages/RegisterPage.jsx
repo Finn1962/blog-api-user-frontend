@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import PageWrapper from "../Components/PageWrapper";
 
 function RegisterPage() {
@@ -7,7 +8,8 @@ function RegisterPage() {
   const [passwordValue, setPasswordValue] = useState("");
   const [confirmPasswordValue, setConfirmPasswordValue] = useState("");
   const [errors, setErrors] = useState([]);
-  console.log(errors);
+
+  const navigate = useNavigate();
 
   async function fetchData() {
     const response = await fetch("http://localhost:3000/register", {
@@ -24,6 +26,7 @@ function RegisterPage() {
       }),
     });
     const result = await response.json();
+    if (result.message === "Registration successful") return navigate("/login");
     setErrors(result.errors);
   }
 

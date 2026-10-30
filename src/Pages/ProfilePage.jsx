@@ -193,6 +193,13 @@ function ProfilePage() {
                       Username is required
                     </p>
                   )}
+                  {errors.some(
+                    (error) => error.msg === "Username is already taken",
+                  ) && (
+                    <p className="text-error font-semibold">
+                      Username is already takens
+                    </p>
+                  )}
                 </fieldset>
                 <fieldset className="fieldset">
                   <legend className="fieldset-legend">Current password</legend>

@@ -9,6 +9,7 @@ function Login() {
   const [emailValue, setEmailValue] = useState("");
   const [passwordValue, setPasswordValue] = useState("");
   const [error, setError] = useState("");
+  console.log(error);
 
   const navigate = useNavigate();
   const { authFetch } = useAuthFetch();

@@ -5,6 +5,7 @@ import LoginPage from "./Pages/LoginPage.jsx";
 import PostPage from "./Pages/PostPage.jsx";
 import ProfilePage from "./Pages/ProfilePage.jsx";
 import RegisterPage from "./Pages/RegisterPage.jsx";
+import VerificationPage from "./Pages/VerificationPage.jsx";
 import Menu from "./Components/Menu.jsx";
 import Footer from "./Components/Footer.jsx";
 
@@ -20,6 +21,7 @@ function App() {
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
+            <Route path="/verification/:token" element={<VerificationPage />} />
           </Routes>
           <Footer />
         </div>
