@@ -1,18 +1,32 @@
 import { useState } from "react";
 import { useAuthFetch } from "../hooks/useAuthFetch";
+import { useCommentForm } from "../Contexts/CommentFormContext";
 
-function CommentForm({ setIsOpen, postId, authorId, fetchComments }) {
+function CommentForm({ postId, authorId, fetchComments }) {
   const [commentValue, setCommentValue] = useState("");
-
+  const [errors, setErrors] = useState([]);
   const { authFetch } = useAuthFetch();
+  const { setIsCommentFormVisible, isResponseComment, repliedCommentId } =
+    useCommentForm();
 
   async function uploadComment() {
     await authFetch({
       url: "http://localhost:3000/comment",
       method: "POST",
-      body: { content: commentValue, postId, authorId },
+      body: {
+        content: commentValue,
+        postId,
+        authorId,
+        isResponse: isResponseComment,
+        repliedCommentId,
+      },
       callback: (response) => {
-        console.log(response);
+        if (response?.errors.length > 0) return setErrors(response.errors);
+        fetchComments();
+        setIsCommentFormVisible(false);
+      },
+      headers: {
+        "Content-Type": "application/json",
       },
     });
   }
@@ -23,28 +37,32 @@ function CommentForm({ setIsOpen, postId, authorId, fetchComments }) {
         <fieldset className="fieldset flex flex-col gap-1">
           <div className="flex justify-between items-center min-h-13">
             <legend className="fieldset-legend font-heading pt-0 text-lg">
-              Type your comment!
+              {isResponseComment ? "Type your response!" : "Type your comment!"}
             </legend>
             <button
               className="btn btn-circle self-start"
-              onClick={() => setIsOpen(false)}
+              onClick={() => setIsCommentFormVisible(false)}
             >
               ✕
             </button>
           </div>
           <textarea
             className="textarea h-24 bg-base-200 w-full"
-            placeholder="Beatiful post!"
+            placeholder={
+              isResponseComment
+                ? "I completely agree with you!"
+                : "Beatiful post!"
+            }
             value={commentValue}
             onChange={(event) => setCommentValue(event.target.value)}
           ></textarea>
+
+          {errors.some((error) => error.msg === "Content is required") && (
+            <p className="text-error font-semibold">Comment cannot be empty.</p>
+          )}
           <button
             className="btn btn-primary mt-3 w-full"
-            onClick={async () => {
-              await uploadComment();
-              fetchComments();
-              setIsOpen(false);
-            }}
+            onClick={async () => uploadComment()}
           >
             Post comment
           </button>

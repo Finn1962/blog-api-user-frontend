@@ -1,12 +1,21 @@
-function Comment({ author, content, profile, navigate }) {
+import { useProfile } from "../Contexts/ProfileContext";
+import { useNavigate } from "react-router-dom";
+import { useCommentForm } from "../Contexts/CommentFormContext";
+
+function Comment({ comment }) {
+  const navigate = useNavigate();
+  const { profile } = useProfile();
+  const { setIsCommentFormVisible, setIsResponseComment, setRepliedCommentId } =
+    useCommentForm();
+
   return (
     <div className="w-full bg-base-100 px-6 py-4 flex flex-col gap-3">
       <div className="flex gap-2 items-center">
         <div className="w-8 h-8 rounded-full overflow-hidden">
-          {author.profile_image_url ? (
+          {comment.author.profile_image_url ? (
             <img
               alt="Tailwind CSS Navbar component object-cover"
-              src={author.profile_image_url}
+              src={comment.author.profile_image_url}
               className="w-full h-full object-cover"
             />
           ) : (
@@ -22,15 +31,17 @@ function Comment({ author, content, profile, navigate }) {
             </div>
           )}
         </div>
-        <h3 className="font-heading text-lg">{author.username}</h3>
+        <h3 className="font-heading text-lg">{comment.author.username}</h3>
       </div>
 
-      <p className="text-sm">{content}</p>
+      <p className="text-sm">{comment.content}</p>
       <div className="flex gap-2 w-full flex justify-between">
         <button
           className="btn btn-square"
           onClick={() => {
-            !profile ? navigate("/login") : null;
+            !profile ? navigate("/login") : setIsCommentFormVisible(true);
+            setIsResponseComment(true);
+            setRepliedCommentId(comment.id);
           }}
         >
           <svg

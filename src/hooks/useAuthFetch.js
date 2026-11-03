@@ -12,6 +12,7 @@ function useAuthFetch() {
     callback = () => {},
     stringifyBody = true,
     errorLocation = "/login",
+    headers = {},
   }) {
     try {
       const hasBody =
@@ -22,9 +23,7 @@ function useAuthFetch() {
       let response = await fetch(url, {
         method,
         credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers,
         body: hasBody ? (stringifyBody ? JSON.stringify(body) : body) : null,
       });
 
@@ -33,9 +32,7 @@ function useAuthFetch() {
           "http://localhost:3000/login/refresh",
           {
             credentials: "include",
-            headers: {
-              "Content-Type": "application/json",
-            },
+            headers,
           },
         );
         if (refreshResponse.status === 401) {
@@ -44,9 +41,7 @@ function useAuthFetch() {
         response = await fetch(url, {
           method,
           credentials: "include",
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers,
           body: hasBody ? (stringifyBody ? JSON.stringify(body) : body) : null,
         });
       }

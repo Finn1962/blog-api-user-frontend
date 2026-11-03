@@ -1,8 +1,9 @@
+import cupImage from "../assets/cup.svg";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useProfile } from "../Contexts/ProfileContext";
 import { useNavigate } from "react-router-dom";
-
+import { useCommentForm } from "../Contexts/CommentFormContext";
 import PageWrapper from "../Components/PageWrapper";
 import RenderPostContent from "../Components/RenderPostContent";
 import Tag from "../Components/Tag";
@@ -12,10 +13,14 @@ import CommentForm from "../Components/CommentForm";
 function PostPage() {
   const [post, setPost] = useState(null);
   const [comments, setComments] = useState([]);
-  const [isCommentFormOpen, setIsCommentFormOpen] = useState(false);
   const { profile } = useProfile();
   const { id } = useParams();
   const navigate = useNavigate();
+  const {
+    isCommentFormVisible,
+    setIsCommentFormVisible,
+    setIsResponseComment,
+  } = useCommentForm();
 
   useEffect(() => {
     (async () => {
@@ -38,7 +43,6 @@ function PostPage() {
       const response = await fetch(`http://localhost:3000/comment/${id}`);
       const result = await response.json();
       setComments(result.comments);
-      console.log(result.comments);
     } catch (error) {
       console.error(error);
     }
@@ -49,9 +53,8 @@ function PostPage() {
       {!post && <Skeleton />}
       {post && (
         <>
-          {isCommentFormOpen && (
+          {isCommentFormVisible && (
             <CommentForm
-              setIsOpen={setIsCommentFormOpen}
               postId={post.id}
               authorId={profile?.id}
               fetchComments={fetchComments}
@@ -105,20 +108,23 @@ function PostPage() {
                     onClick={() => {
                       !profile
                         ? navigate("/login")
-                        : setIsCommentFormOpen(true);
+                        : setIsCommentFormVisible(true);
+                      setIsResponseComment(false);
                     }}
                   >
                     Add Comment
                   </button>
                 </div>
                 {comments.map((comment) => (
-                  <Comment
-                    author={comment.author}
-                    content={comment.content}
-                    profile={profile}
-                    navigate={navigate}
-                  />
+                  <Comment comment={comment} key={comment.id} />
                 ))}
+
+                {comments.length === 0 && (
+                  <div className="w-full flex sm:flex-row flex-col gap-3 justify-center items-center">
+                    <p className="font-heading">Write the first comment!</p>
+                    <img src={cupImage} className="max-w-15" />
+                  </div>
+                )}
               </div>
             </div>
           </PageWrapper>
