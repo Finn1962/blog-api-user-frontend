@@ -1,14 +1,21 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useProfile } from "../Contexts/ProfileContext";
+import { useNavigate } from "react-router-dom";
 
 import PageWrapper from "../Components/PageWrapper";
 import RenderPostContent from "../Components/RenderPostContent";
 import Tag from "../Components/Tag";
+import Comment from "../Components/Comment";
+import CommentForm from "../Components/CommentForm";
 
 function PostPage() {
-  const { id } = useParams();
-
   const [post, setPost] = useState(null);
+  const [comments, setComments] = useState([]);
+  const [isCommentFormOpen, setIsCommentFormOpen] = useState(false);
+  const { profile } = useProfile();
+  const { id } = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     (async () => {
@@ -22,11 +29,35 @@ function PostPage() {
     })();
   }, []);
 
+  useEffect(() => {
+    fetchComments();
+  }, []);
+
+  async function fetchComments() {
+    try {
+      const response = await fetch(`http://localhost:3000/comment/${id}`);
+      const result = await response.json();
+      setComments(result.comments);
+      console.log(result.comments);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   return (
     <>
       {!post && <Skeleton />}
       {post && (
         <>
+          {isCommentFormOpen && (
+            <CommentForm
+              setIsOpen={setIsCommentFormOpen}
+              postId={post.id}
+              authorId={profile?.id}
+              fetchComments={fetchComments}
+            />
+          )}
+
           <PageWrapper className="px-0 pt-15 mb-3">
             {post.image_url ? (
               <img
@@ -51,7 +82,7 @@ function PostPage() {
             <div className="w-full max-w-5xl flex flex-col gap-10">
               <div className="flex gap-3">
                 {post.tags.map((tag) => {
-                  return <Tag tag={tag} />;
+                  return <Tag tag={tag} key={tag.id} />;
                 })}
               </div>
               <h2 className="font-heading text-4xl md:text-5xl break-words">
@@ -62,6 +93,32 @@ function PostPage() {
                   htmlContent={post.content}
                   usedLanguage={post.prog_lang}
                 />
+              </div>
+
+              <div className="flex flex-col gap-5">
+                <div className="flex sm:flex-row flex-col justify-between gap-3">
+                  <h2 className="font-heading text-3xl break-words self-start mb-0">
+                    Comments
+                  </h2>
+                  <button
+                    className="btn btn-primary font-heading"
+                    onClick={() => {
+                      !profile
+                        ? navigate("/login")
+                        : setIsCommentFormOpen(true);
+                    }}
+                  >
+                    Add Comment
+                  </button>
+                </div>
+                {comments.map((comment) => (
+                  <Comment
+                    author={comment.author}
+                    content={comment.content}
+                    profile={profile}
+                    navigate={navigate}
+                  />
+                ))}
               </div>
             </div>
           </PageWrapper>
