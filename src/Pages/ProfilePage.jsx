@@ -234,7 +234,6 @@ function ProfilePage() {
                       setNewPasswordValue(event.target.value)
                     }
                   />
-
                   {errors.some(
                     (error) => error.msg === "New password is required",
                   ) && (

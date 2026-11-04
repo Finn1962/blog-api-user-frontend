@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useAuthFetch } from "../hooks/useAuthFetch";
 import { useCommentForm } from "../Contexts/CommentFormContext";
 
-function CommentForm({ postId, authorId, fetchComments }) {
+function CommentForm({ postId, fetchComments }) {
   const [commentValue, setCommentValue] = useState("");
   const [errors, setErrors] = useState([]);
   const { authFetch } = useAuthFetch();
@@ -16,9 +16,9 @@ function CommentForm({ postId, authorId, fetchComments }) {
       body: {
         content: commentValue,
         postId,
-        authorId,
         isResponse: isResponseComment,
         repliedCommentId,
+        commentId: repliedCommentId,
       },
       callback: (response) => {
         if (response?.errors.length > 0) return setErrors(response.errors);

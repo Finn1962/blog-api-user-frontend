@@ -23,6 +23,11 @@ function PostPage() {
   } = useCommentForm();
 
   useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "instant",
+    });
+
     (async () => {
       try {
         const response = await fetch(`http://localhost:3000/post/${id}`);
@@ -31,11 +36,8 @@ function PostPage() {
       } catch (error) {
         console.error(error);
       }
+      fetchComments();
     })();
-  }, []);
-
-  useEffect(() => {
-    fetchComments();
   }, []);
 
   async function fetchComments() {
@@ -54,11 +56,7 @@ function PostPage() {
       {post && (
         <>
           {isCommentFormVisible && (
-            <CommentForm
-              postId={post.id}
-              authorId={profile?.id}
-              fetchComments={fetchComments}
-            />
+            <CommentForm postId={post.id} fetchComments={fetchComments} />
           )}
 
           <PageWrapper className="px-0 pt-15 mb-3">

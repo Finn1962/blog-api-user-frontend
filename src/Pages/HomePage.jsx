@@ -108,6 +108,7 @@ function HomePage() {
           className="col-start-4 col-end-5 lg:flex hidden ps-4 pe-4 pt-2 pb-2"
           searchValue={searchValue}
           setSearchValue={setSearchValue}
+          posts={posts}
         />
       </div>
 

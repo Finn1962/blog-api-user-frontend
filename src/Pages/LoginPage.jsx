@@ -9,7 +9,6 @@ function Login() {
   const [emailValue, setEmailValue] = useState("");
   const [passwordValue, setPasswordValue] = useState("");
   const [error, setError] = useState("");
-  console.log(error);
 
   const navigate = useNavigate();
   const { authFetch } = useAuthFetch();
@@ -84,9 +83,12 @@ function Login() {
                   <p className="text-error font-bold mt-1">{error}</p>
                 )}
                 <div className="flex flex-col sm:flex-row justify-start items-start sm:items-center gap-0 sm:gap-2 mt-2">
-                  <a className="link link-hover opacity-70 hover:opacity-100 transition-all ">
+                  <Link
+                    to="/reset-password"
+                    className="link link-hover opacity-70 hover:opacity-100 transition-all "
+                  >
                     Forgot your password
-                  </a>
+                  </Link>
                   <span>or</span>
                   <Link
                     to="/register"

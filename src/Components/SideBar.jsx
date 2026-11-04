@@ -1,6 +1,7 @@
+import { useNavigate } from "react-router-dom";
 import { useScroll } from "../hooks/useScroll.js";
 
-function SideBar({ className, searchValue, setSearchValue }) {
+function SideBar({ className, searchValue, setSearchValue, posts }) {
   const { scrollDirection } = useScroll();
 
   return (
@@ -64,7 +65,7 @@ function SideBar({ className, searchValue, setSearchValue }) {
         />
       </div>
 
-      <RandomButton className="lg:inline-flex hidden mt-10" />
+      <RandomButton className="lg:inline-flex hidden mt-10" posts={posts} />
       <ResetButton
         className="lg:inline-flex hidden mt-2"
         setSearchValue={setSearchValue}
@@ -73,9 +74,19 @@ function SideBar({ className, searchValue, setSearchValue }) {
   );
 }
 
-function RandomButton({ className }) {
+function RandomButton({ className, posts }) {
+  const navigate = useNavigate();
+
+  function openRandomPost() {
+    const randomPost = posts[Math.floor(Math.random() * posts.length)];
+    navigate(`/post/${randomPost.id}`);
+  }
+
   return (
-    <button className={`btn bg-base-100  font-heading ${className}`}>
+    <button
+      className={`btn bg-base-100  font-heading ${className}`}
+      onClick={openRandomPost}
+    >
       Random article
       <svg
         viewBox="0 0 24 24"

@@ -6,6 +6,7 @@ import PostPage from "./Pages/PostPage.jsx";
 import ProfilePage from "./Pages/ProfilePage.jsx";
 import RegisterPage from "./Pages/RegisterPage.jsx";
 import VerificationPage from "./Pages/VerificationPage.jsx";
+import ResetPasswordPage from "./Pages/ResetPasswordPage.jsx";
 import Menu from "./Components/Menu.jsx";
 import Footer from "./Components/Footer.jsx";
 
@@ -22,6 +23,7 @@ function App() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/verification/:token" element={<VerificationPage />} />
+            <Route path="/reset-password" element={<ResetPasswordPage />} />
           </Routes>
           <Footer />
         </div>
