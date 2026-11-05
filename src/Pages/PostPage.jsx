@@ -1,6 +1,6 @@
 import cupImage from "../assets/cup.svg";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { useProfile } from "../Contexts/ProfileContext";
 import { useNavigate } from "react-router-dom";
 import { useCommentForm } from "../Contexts/CommentFormContext";
@@ -13,8 +13,12 @@ import CommentForm from "../Components/CommentForm";
 function PostPage() {
   const [post, setPost] = useState(null);
   const [comments, setComments] = useState([]);
+  const pathname = window.location.pathname;
+  const queryParams = window.location.search;
   const { profile } = useProfile();
   const { id } = useParams();
+  const [searchParams] = useSearchParams();
+  const isPreview = JSON.parse(searchParams.get("isPreview"));
   const navigate = useNavigate();
   const {
     isCommentFormVisible,
@@ -30,8 +34,16 @@ function PostPage() {
 
     (async () => {
       try {
-        const response = await fetch(`http://localhost:3000/post/${id}`);
+        const response = await fetch(
+          `http://localhost:3000/post/${id}?isPreview=${isPreview}`,
+          {
+            method: "GET",
+            credentials: "include",
+          },
+        );
         const result = await response.json();
+        if (result.message === "No authorization")
+          navigate(`/login?redirect=${pathname + queryParams}`);
         setPost(result.post);
       } catch (error) {
         console.error(error);
@@ -104,6 +116,7 @@ function PostPage() {
                   <button
                     className="btn btn-primary font-heading"
                     onClick={() => {
+                      if (isPreview) return;
                       !profile
                         ? navigate("/login")
                         : setIsCommentFormVisible(true);
@@ -113,16 +126,18 @@ function PostPage() {
                     Add Comment
                   </button>
                 </div>
-                {comments.map((comment) => (
-                  <Comment comment={comment} key={comment.id} />
-                ))}
+                {!isPreview &&
+                  comments.map((comment) => (
+                    <Comment comment={comment} key={comment.id} />
+                  ))}
 
-                {comments.length === 0 && (
-                  <div className="w-full flex sm:flex-row flex-col gap-3 justify-center items-center">
-                    <p className="font-heading">Write the first comment!</p>
-                    <img src={cupImage} className="max-w-15" />
-                  </div>
-                )}
+                {comments.length === 0 ||
+                  (isPreview && (
+                    <div className="w-full flex sm:flex-row flex-col gap-3 justify-center items-center">
+                      <p className="font-heading">Write the first comment!</p>
+                      <img src={cupImage} className="max-w-15" />
+                    </div>
+                  ))}
               </div>
             </div>
           </PageWrapper>

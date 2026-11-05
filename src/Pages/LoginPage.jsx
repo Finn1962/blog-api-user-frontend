@@ -1,11 +1,14 @@
 import { useState } from "react";
 import { useAuthFetch } from "../hooks/useAuthFetch";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useProfile } from "../Contexts/ProfileContext";
 import { Link } from "react-router-dom";
 import PageWrapper from "../Components/PageWrapper";
 
 function Login() {
+  const [searchParams] = useSearchParams();
+  const redirect = searchParams.get("redirect");
+
   const [emailValue, setEmailValue] = useState("");
   const [passwordValue, setPasswordValue] = useState("");
   const [error, setError] = useState("");
@@ -36,7 +39,8 @@ function Login() {
             setProfile(result.userData);
           },
         });
-        navigate("/");
+        if (redirect) navigate(redirect);
+        else navigate("/");
       }
     } catch (error) {
       console.error(error);
