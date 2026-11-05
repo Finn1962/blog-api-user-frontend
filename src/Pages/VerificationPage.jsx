@@ -16,7 +16,15 @@ function VerificationPage() {
     (async () => {
       try {
         setIsLoading(true);
-        const response = await fetch(`http://localhost:3000/register/${token}`);
+        const response = await fetch(`http://localhost:3000/register/`, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            token,
+          }),
+        });
         const result = await response.json();
         if (result.message === "Authorization successful") return setErrors([]);
         setErrors(result.errors);

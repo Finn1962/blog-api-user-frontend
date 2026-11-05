@@ -23,7 +23,8 @@ function ResetPasswordPage() {
     if (result.errors) {
       setErrors(result.errors);
       setSuccessfullySent(false);
-    } else {
+    }
+    if (result.message === "Email is sent if the email address exists") {
       setErrors([]);
       setSuccessfullySent(true);
     }
