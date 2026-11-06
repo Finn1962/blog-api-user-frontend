@@ -8,6 +8,7 @@ import ToggleSwitch from "../Components/ToggleSwitch.jsx";
 
 function ProfilePage() {
   const [createdAtValue, setCreatedAtValue] = useState(null);
+  const [emailValue, setEmailValue] = useState("");
   const [usernameValue, setUsernameValue] = useState("");
   const [currentPasswordValue, setCurrentPasswordValue] = useState("");
   const [newPasswordValue, setNewPasswordValue] = useState("");
@@ -34,6 +35,7 @@ function ProfilePage() {
       setCreatedAtValue(
         new Date(profile.created_at).toLocaleDateString("de-DE"),
       );
+      setEmailValue(profile.email);
       setUsernameValue(profile.username);
       setEmailNotificationValue(profile.email_notifications);
 
@@ -177,6 +179,16 @@ function ProfilePage() {
                 </p>
               </div>
               <div className="w-full">
+                <fieldset className="fieldset">
+                  <legend className="fieldset-legend">Email</legend>
+                  <input
+                    type="text"
+                    className="input w-full bg-base-300"
+                    placeholder="Max"
+                    disabled
+                    value={emailValue}
+                  />
+                </fieldset>
                 <fieldset className="fieldset">
                   <legend className="fieldset-legend">Username</legend>
                   <input

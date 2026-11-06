@@ -68,6 +68,9 @@ function Login() {
                   placeholder="john.doe@example.com"
                   value={emailValue}
                   onChange={(event) => setEmailValue(event.target.value)}
+                  onKeyDown={(event) =>
+                    event.key === "Enter" && sendLoginRequest()
+                  }
                 />
                 <label className="label">Password</label>
                 <input
@@ -76,6 +79,9 @@ function Login() {
                   placeholder="************"
                   value={passwordValue}
                   onChange={(event) => setPasswordValue(event.target.value)}
+                  onKeyDown={(event) =>
+                    event.key === "Enter" && sendLoginRequest()
+                  }
                 />
                 <button
                   className="btn btn-primary mt-2"

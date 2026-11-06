@@ -65,11 +65,12 @@ function RegisterPage() {
               <fieldset className="fieldset flex flex-col gap-2">
                 <label className="label">Username</label>
                 <input
-                  type="email"
+                  type="text"
                   className="input bg-base-200 w-full"
                   placeholder="John Doe"
                   value={usernameValue}
                   onChange={(event) => setUsernameValue(event.target.value)}
+                  onKeyDown={(event) => event.key === "Enter" && fetchData()}
                 />
                 {errors.some(
                   (error) => error.msg === "Username is already taken",
@@ -92,6 +93,7 @@ function RegisterPage() {
                   placeholder="john.doe@example.com"
                   value={emailValue}
                   onChange={(event) => setEmailValue(event.target.value)}
+                  onKeyDown={(event) => event.key === "Enter" && fetchData()}
                 />
                 {errors.some(
                   (error) => error.msg === "Email is already taken",
@@ -110,6 +112,7 @@ function RegisterPage() {
                   placeholder="************"
                   value={passwordValue}
                   onChange={(event) => setPasswordValue(event.target.value)}
+                  onKeyDown={(event) => event.key === "Enter" && fetchData()}
                 />
                 {errors.some(
                   (error) => error.msg === "Password is required",
@@ -136,6 +139,7 @@ function RegisterPage() {
                   onChange={(event) =>
                     setConfirmPasswordValue(event.target.value)
                   }
+                  onKeyDown={(event) => event.key === "Enter" && fetchData()}
                 />
                 {errors.some(
                   (error) => error.msg === "Passwords must match",
