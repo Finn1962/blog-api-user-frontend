@@ -34,13 +34,13 @@ function PostPage() {
 
     (async () => {
       try {
-        const response = await fetch(
-          `http://localhost:3000/post/${id}?isPreview=${isPreview}`,
-          {
-            method: "GET",
-            credentials: "include",
-          },
-        );
+        const url = isPreview
+          ? `http://localhost:3000/post/${id}?isPreview=${isPreview}`
+          : `http://localhost:3000/post/${id}`;
+        const response = await fetch(url, {
+          method: "GET",
+          credentials: "include",
+        });
         const result = await response.json();
         if (result.message === "No authorization")
           navigate(`/login?redirect=${pathname + queryParams}`);
