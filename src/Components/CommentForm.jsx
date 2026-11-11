@@ -1,3 +1,4 @@
+const apiUrl = import.meta.env.VITE_API_URL;
 import { useState } from "react";
 import { useAuthFetch } from "../hooks/useAuthFetch";
 import { useCommentForm } from "../Contexts/CommentFormContext";
@@ -11,7 +12,7 @@ function CommentForm({ postId, fetchComments }) {
 
   async function uploadComment() {
     await authFetch({
-      url: "http://localhost:3000/comment",
+      url: `${apiUrl}comment`,
       method: "POST",
       body: {
         content: commentValue,

@@ -1,3 +1,4 @@
+const apiUrl = import.meta.env.VITE_API_URL;
 import { useNavigate } from "react-router";
 
 function useAuthFetch() {
@@ -28,13 +29,10 @@ function useAuthFetch() {
       });
 
       if (response.status === 401) {
-        const refreshResponse = await fetch(
-          "http://localhost:3000/login/refresh",
-          {
-            credentials: "include",
-            headers,
-          },
-        );
+        const refreshResponse = await fetch(`${apiUrl}login/refresh`, {
+          credentials: "include",
+          headers,
+        });
         if (refreshResponse.status === 401) {
           return errorLocation && navigate(errorLocation);
         }

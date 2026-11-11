@@ -1,3 +1,4 @@
+const apiUrl = import.meta.env.VITE_API_URL;
 import { createContext, useContext, useState, useEffect } from "react";
 import { useAuthFetch } from "../hooks/useAuthFetch";
 
@@ -10,7 +11,7 @@ function ProfileProvider({ children }) {
 
   useEffect(() => {
     authFetch({
-      url: "http://localhost:3000/profile",
+      url: `${apiUrl}profile`,
       errorLocation: null,
       callback: (result) => {
         setProfile(result.userData);

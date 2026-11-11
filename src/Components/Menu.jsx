@@ -1,3 +1,4 @@
+const apiUrl = import.meta.env.VITE_API_URL;
 import { useScroll } from "../hooks/useScroll.js";
 import { Link } from "react-router-dom";
 import { useProfile } from "../Contexts/ProfileContext.jsx";
@@ -11,7 +12,7 @@ function Menu() {
   const { authFetch } = useAuthFetch();
 
   function logout() {
-    authFetch({ url: "http://localhost:3000/logout" });
+    authFetch({ url: `${apiUrl}logout` });
     setProfile(null);
   }
 

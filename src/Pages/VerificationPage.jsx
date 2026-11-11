@@ -1,3 +1,4 @@
+const apiUrl = import.meta.env.VITE_API_URL;
 import { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 import PageWrapper from "../Components/PageWrapper";
@@ -15,7 +16,7 @@ function VerificationPage() {
     (async () => {
       try {
         setIsLoading(true);
-        const response = await fetch(`http://localhost:3000/register/`, {
+        const response = await fetch(`${apiUrl}register`, {
           method: "PATCH",
           headers: {
             "Content-Type": "application/json",

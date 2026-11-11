@@ -1,3 +1,4 @@
+const apiUrl = import.meta.env.VITE_API_URL;
 import { useState } from "react";
 import PageWrapper from "../Components/PageWrapper";
 
@@ -7,18 +8,15 @@ function ResetPasswordPage() {
   const [emailValue, setEmailValue] = useState("");
 
   async function handleButtonClick() {
-    const response = await fetch(
-      "http://localhost:3000/register/reset-password",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: emailValue,
-        }),
+    const response = await fetch(`${apiUrl}register/reset-password`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
       },
-    );
+      body: JSON.stringify({
+        email: emailValue,
+      }),
+    });
     const result = await response.json();
     if (result.errors) {
       setErrors(result.errors);

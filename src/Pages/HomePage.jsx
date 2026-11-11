@@ -1,10 +1,8 @@
+const apiUrl = import.meta.env.VITE_API_URL;
 import { useEffect, useState } from "react";
-
 import { debounce } from "../utils/debounce.js";
-
 import backgroundImage from "../assets/laptop.svg";
 import cupImage from "../assets/cup.svg";
-
 import PageWrapper from "../Components/PageWrapper.jsx";
 import PostPreview from "../Components/PostPreview.jsx";
 import SideBar from "../Components/SideBar.jsx";
@@ -22,8 +20,7 @@ function HomePage() {
       try {
         setPosts(null);
         const response = await fetch(
-          `http://localhost:3000/post?searchValue=${searchValue}
-          &skip=${currentPaginationNumber * elementsOnEachSlide}&take=${elementsOnEachSlide}`,
+          `${apiUrl}post?searchValue=${searchValue}&skip=${currentPaginationNumber * elementsOnEachSlide}&take=${elementsOnEachSlide}`,
         );
         const result = await response.json();
         setPaginationTotalNumber(

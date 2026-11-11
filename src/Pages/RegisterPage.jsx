@@ -1,3 +1,4 @@
+const apiUrl = import.meta.env.VITE_API_URL;
 import { useState } from "react";
 import PageWrapper from "../Components/PageWrapper";
 
@@ -13,7 +14,7 @@ function RegisterPage() {
   async function fetchData() {
     try {
       setRegistrationSuccess(false);
-      const response = await fetch("http://localhost:3000/register", {
+      const response = await fetch(`${apiUrl}register`, {
         method: "POST",
         credentials: "include",
         headers: {

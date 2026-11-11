@@ -1,3 +1,4 @@
+const apiUrl = import.meta.env.VITE_API_URL;
 import { useState } from "react";
 import { useProfile } from "../Contexts/ProfileContext";
 import { useNavigate } from "react-router-dom";
@@ -18,7 +19,7 @@ function Comment({ comment }) {
 
   function addLikeToComment() {
     authFetch({
-      url: "http://localhost:3000/comment/like",
+      url: `${apiUrl}comment/like`,
       method: "POST",
       body: {
         commentId: comment.id,
@@ -37,7 +38,7 @@ function Comment({ comment }) {
 
   function removeLikeFromComment() {
     authFetch({
-      url: `http://localhost:3000/comment/like/${comment.id}`,
+      url: `${apiUrl}comment/like/${comment.id}`,
       method: "DELETE",
       callback: (result) => {
         if (result.message === "Like removed") {

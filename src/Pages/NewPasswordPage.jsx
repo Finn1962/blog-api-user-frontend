@@ -1,3 +1,4 @@
+const apiUrl = import.meta.env.VITE_API_URL;
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
@@ -12,20 +13,17 @@ function NewPasswordPage() {
   const navigate = useNavigate();
 
   async function sendNewPassword() {
-    const response = await fetch(
-      "http://localhost:3000/register/reset-password",
-      {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          password: passwordValue,
-          confirmPassword: confirmPasswordValue,
-          token,
-        }),
+    const response = await fetch(`${apiUrl}register/reset-password`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
       },
-    );
+      body: JSON.stringify({
+        password: passwordValue,
+        confirmPassword: confirmPasswordValue,
+        token,
+      }),
+    });
     const result = await response.json();
     if (result?.errors) setErrors(result.errors);
     if (result.message === "Password successfully saved") navigate("/login");

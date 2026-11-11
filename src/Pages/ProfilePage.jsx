@@ -1,3 +1,4 @@
+const apiUrl = import.meta.env.VITE_API_URL;
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useFormChanges } from "../hooks/useFormChanges.js";
@@ -81,7 +82,7 @@ function ProfilePage() {
     formData.append("image", profileImageValue);
 
     authFetch({
-      url: "http://localhost:3000/profile",
+      url: `${apiUrl}profile`,
       method: "PUT",
       body: formData,
       stringifyBody: false,
@@ -98,7 +99,7 @@ function ProfilePage() {
           if (profileImageValue)
             addInitialValue("profileImageValue", profileImageValue);
           await authFetch({
-            url: "http://localhost:3000/profile",
+            url: `${apiUrl}profile`,
             callback: (result) => {
               setProfile(result.userData);
             },

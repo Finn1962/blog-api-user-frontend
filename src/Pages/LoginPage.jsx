@@ -1,3 +1,4 @@
+const apiUrl = import.meta.env.VITE_API_URL;
 import { useState } from "react";
 import { useAuthFetch } from "../hooks/useAuthFetch";
 import { useNavigate, useSearchParams } from "react-router-dom";
@@ -19,7 +20,7 @@ function Login() {
 
   async function sendLoginRequest() {
     try {
-      const response = await fetch("http://localhost:3000/login", {
+      const response = await fetch(`${apiUrl}login`, {
         method: "POST",
         credentials: "include",
         headers: {
@@ -34,7 +35,7 @@ function Login() {
       if (result.message === "Login failed") setError(result.errors[0]);
       if (result.message === "Login successful") {
         await authFetch({
-          url: "http://localhost:3000/profile",
+          url: `${apiUrl}profile`,
           callback: (result) => {
             setProfile(result.userData);
           },
