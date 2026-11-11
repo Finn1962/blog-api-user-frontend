@@ -18,7 +18,7 @@ function PostPage() {
   const { profile } = useProfile();
   const { id } = useParams();
   const [searchParams] = useSearchParams();
-  const isPreview = JSON.parse(searchParams.get("isPreview"));
+  const isPreview = searchParams.get("isPreview") === "true";
   const navigate = useNavigate();
   const {
     isCommentFormVisible,
