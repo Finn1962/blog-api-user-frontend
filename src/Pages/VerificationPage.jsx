@@ -1,7 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 import PageWrapper from "../Components/PageWrapper";
-
 function VerificationPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [errors, setErrors] = useState([]);

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useFormChanges } from "../hooks/useFormChanges.js";
 import { useAuthFetch } from "../hooks/useAuthFetch.js";
 import { useProfile } from "../Contexts/ProfileContext.jsx";
-import PageWrapper from "../Components/PageWrapper.jsx";
+import PageWrapper from "../Components/PageWrapper";
 import ToggleSwitch from "../Components/ToggleSwitch.jsx";
 
 function ProfilePage() {

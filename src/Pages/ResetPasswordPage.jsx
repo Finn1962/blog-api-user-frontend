@@ -1,5 +1,5 @@
 import { useState } from "react";
-import PageWrapper from "../Components/PageWrapper.jsx";
+import PageWrapper from "../Components/PageWrapper";
 
 function ResetPasswordPage() {
   const [successfullySent, setSuccessfullySent] = useState(false);
