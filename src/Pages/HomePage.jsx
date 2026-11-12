@@ -8,6 +8,7 @@ import PostPreview from "../Components/PostPreview.jsx";
 import SideBar from "../Components/SideBar.jsx";
 
 function HomePage() {
+  const [isLoading, setIsLoading] = useState(false);
   const [posts, setPosts] = useState(null);
   const [searchValue, setSearchValue] = useState("");
   const [currentPaginationNumber, setCurrentPaginationNumber] = useState(0);
@@ -17,6 +18,7 @@ function HomePage() {
 
   useEffect(() => {
     debounce(async () => {
+      setIsLoading(true);
       try {
         setPosts(null);
         const response = await fetch(
@@ -29,6 +31,8 @@ function HomePage() {
         setPosts(result.posts);
       } catch (error) {
         console.error(error);
+      } finally {
+        setIsLoading(false);
       }
     });
   }, [searchValue, currentPaginationNumber]);
@@ -90,7 +94,7 @@ function HomePage() {
             </div>
           ))}
 
-        {!posts && (
+        {isLoading && (
           <div className="columns-1 sm:columns-2 md:columns-3 gap-5 space-y-5 w-full col-start-1 lg:col-end-4 col-end-5">
             <Skeleton />
             <Skeleton />

@@ -7,6 +7,8 @@ import { Link } from "react-router-dom";
 import PageWrapper from "../Components/PageWrapper";
 
 function Login() {
+  const [isLoading, setIsLoading] = useState(false);
+
   const [searchParams] = useSearchParams();
   const redirect = searchParams.get("redirect");
 
@@ -19,6 +21,7 @@ function Login() {
   const { setProfile } = useProfile();
 
   async function sendLoginRequest() {
+    setIsLoading(true);
     try {
       const response = await fetch(`${apiUrl}login`, {
         method: "POST",
@@ -45,6 +48,8 @@ function Login() {
       }
     } catch (error) {
       console.error(error);
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -88,7 +93,11 @@ function Login() {
                   className="btn btn-primary mt-2"
                   onClick={() => sendLoginRequest()}
                 >
-                  Login
+                  {!isLoading ? (
+                    "Login"
+                  ) : (
+                    <span className="loading loading-spinner loading-md"></span>
+                  )}
                 </button>
                 {error !== "" && (
                   <p className="text-error font-bold mt-1">{error}</p>
