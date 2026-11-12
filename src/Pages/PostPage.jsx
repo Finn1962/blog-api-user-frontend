@@ -36,7 +36,7 @@ function PostPage() {
     (async () => {
       try {
         const url = isPreview
-          ? `${apiUrl}${id}?isPreview=${isPreview}`
+          ? `${apiUrl}post/${id}?isPreview=${isPreview}`
           : `${apiUrl}post/${id}`;
         const response = await fetch(url, {
           method: "GET",
