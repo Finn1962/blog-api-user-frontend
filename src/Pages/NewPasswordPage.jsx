@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import PageWrapper from "../Components/PageWrapper";
 
 function NewPasswordPage() {
+  const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState([]);
   const [passwordValue, setPasswordValue] = useState("");
   const [confirmPasswordValue, setConfirmPasswordValue] = useState("");
@@ -13,20 +14,27 @@ function NewPasswordPage() {
   const navigate = useNavigate();
 
   async function sendNewPassword() {
-    const response = await fetch(`${apiUrl}register/reset-password`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        password: passwordValue,
-        confirmPassword: confirmPasswordValue,
-        token,
-      }),
-    });
-    const result = await response.json();
-    if (result?.errors) setErrors(result.errors);
-    if (result.message === "Password successfully saved") navigate("/login");
+    setIsLoading(true);
+    try {
+      const response = await fetch(`${apiUrl}register/reset-password`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          password: passwordValue,
+          confirmPassword: confirmPasswordValue,
+          token,
+        }),
+      });
+      const result = await response.json();
+      if (result?.errors) setErrors(result.errors);
+      if (result.message === "Password successfully saved") navigate("/login");
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   return (
@@ -99,7 +107,11 @@ function NewPasswordPage() {
                   className="btn btn-primary mt-2"
                   onClick={sendNewPassword}
                 >
-                  Save new password
+                  {!isLoading ? (
+                    "Save new password"
+                  ) : (
+                    <span className="loading loading-spinner loading-md"></span>
+                  )}
                 </button>
               </fieldset>
             </div>

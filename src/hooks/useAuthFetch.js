@@ -8,8 +8,7 @@ function useAuthFetch() {
     url,
     method = "GET",
     body = null,
-    setLoadingTrue = () => {},
-    setLoadingFalse = () => {},
+    setIsLoading = () => {},
     callback = () => {},
     stringifyBody = true,
     errorLocation = "/login",
@@ -19,7 +18,7 @@ function useAuthFetch() {
       const hasBody =
         method === "POST" || method === "PUT" || method === "PATCH";
 
-      setLoadingTrue();
+      setIsLoading(true);
 
       let response = await fetch(url, {
         method,
@@ -50,7 +49,7 @@ function useAuthFetch() {
     } catch (error) {
       console.error(error);
     } finally {
-      setLoadingFalse();
+      setIsLoading(false);
     }
   }
 

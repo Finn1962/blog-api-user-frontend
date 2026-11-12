@@ -3,6 +3,7 @@ import { useState } from "react";
 import PageWrapper from "../Components/PageWrapper";
 
 function RegisterPage() {
+  const [isLoading, setIsLoading] = useState(false);
   const [usernameValue, setUsernameValue] = useState("");
   const [emailValue, setEmailValue] = useState("");
   const [passwordValue, setPasswordValue] = useState("");
@@ -12,6 +13,7 @@ function RegisterPage() {
   const [registrationSuccess, setRegistrationSuccess] = useState(false);
 
   async function fetchData() {
+    setIsLoading(true);
     try {
       setRegistrationSuccess(false);
       const response = await fetch(`${apiUrl}register`, {
@@ -41,6 +43,8 @@ function RegisterPage() {
       setErrors(result.errors);
     } catch (error) {
       console.error(error);
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -190,7 +194,11 @@ function RegisterPage() {
                   </svg>
                 </label>
                 <button className="btn btn-primary mt-2" onClick={fetchData}>
-                  Create account
+                  {!isLoading ? (
+                    "Create account"
+                  ) : (
+                    <span className="loading loading-spinner loading-md"></span>
+                  )}
                 </button>
               </fieldset>
             </div>

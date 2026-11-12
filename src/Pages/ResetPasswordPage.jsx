@@ -3,28 +3,36 @@ import { useState } from "react";
 import PageWrapper from "../Components/PageWrapper";
 
 function ResetPasswordPage() {
+  const [isLoading, setIsLoading] = useState(false);
   const [successfullySent, setSuccessfullySent] = useState(false);
   const [errors, setErrors] = useState([]);
   const [emailValue, setEmailValue] = useState("");
 
   async function handleButtonClick() {
-    const response = await fetch(`${apiUrl}register/reset-password`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email: emailValue,
-      }),
-    });
-    const result = await response.json();
-    if (result.errors) {
-      setErrors(result.errors);
-      setSuccessfullySent(false);
-    }
-    if (result.message === "Email is sent if the email address exists") {
-      setErrors([]);
-      setSuccessfullySent(true);
+    setIsLoading(true);
+    try {
+      const response = await fetch(`${apiUrl}register/reset-password`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: emailValue,
+        }),
+      });
+      const result = await response.json();
+      if (result.errors) {
+        setErrors(result.errors);
+        setSuccessfullySent(false);
+      }
+      if (result.message === "Email is sent if the email address exists") {
+        setErrors([]);
+        setSuccessfullySent(true);
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -64,7 +72,11 @@ function ResetPasswordPage() {
                   className="btn btn-primary mt-2"
                   onClick={handleButtonClick}
                 >
-                  Send email
+                  {!isLoading ? (
+                    "Send email"
+                  ) : (
+                    <span className="loading loading-spinner loading-md"></span>
+                  )}
                 </button>
               </fieldset>
               <p className="label whitespace-normal">

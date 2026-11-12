@@ -8,6 +8,7 @@ import PageWrapper from "../Components/PageWrapper";
 import ToggleSwitch from "../Components/ToggleSwitch.jsx";
 
 function ProfilePage() {
+  const [isLoading, setIsLoading] = useState(false);
   const [createdAtValue, setCreatedAtValue] = useState(null);
   const [emailValue, setEmailValue] = useState("");
   const [usernameValue, setUsernameValue] = useState("");
@@ -74,6 +75,7 @@ function ProfilePage() {
 
   function uploadProfileData() {
     const formData = new FormData();
+    formData.append("role", profile.role);
     formData.append("username", usernameValue);
     formData.append("currentPassword", currentPasswordValue);
     formData.append("newPassword", newPasswordValue);
@@ -84,6 +86,7 @@ function ProfilePage() {
     authFetch({
       url: `${apiUrl}profile`,
       method: "PUT",
+      setIsLoading: setIsLoading,
       body: formData,
       stringifyBody: false,
       callback: async (result) => {
@@ -320,7 +323,11 @@ function ProfilePage() {
                     }
                     onClick={uploadProfileData}
                   >
-                    Save changes
+                    {!isLoading ? (
+                      "Save changes"
+                    ) : (
+                      <span className="loading loading-spinner loading-md"></span>
+                    )}
                   </button>
                 </fieldset>
               </div>

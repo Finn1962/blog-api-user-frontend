@@ -12,6 +12,7 @@ import Comment from "../Components/Comment";
 import CommentForm from "../Components/CommentForm";
 
 function PostPage() {
+  const [isLoading, setIsLoading] = useState(true);
   const [post, setPost] = useState(null);
   const [comments, setComments] = useState([]);
   const pathname = window.location.pathname;
@@ -34,6 +35,7 @@ function PostPage() {
     });
 
     (async () => {
+      setIsLoading(true);
       try {
         const url = isPreview
           ? `${apiUrl}post/${id}?isPreview=${isPreview}`
@@ -48,6 +50,8 @@ function PostPage() {
         setPost(result.post);
       } catch (error) {
         console.error(error);
+      } finally {
+        setIsLoading(false);
       }
       fetchComments();
     })();
@@ -65,7 +69,7 @@ function PostPage() {
 
   return (
     <>
-      {!post && <Skeleton />}
+      {isLoading && <Skeleton />}
       {post && (
         <>
           {isCommentFormVisible && (
@@ -150,23 +154,25 @@ function PostPage() {
 
 function Skeleton() {
   return (
-    <div className="w-full h-screen flex flex-col justify-start gap-5 items-center">
-      <div className="flex w-full flex-col gap-4">
-        <div className="skeleton h-150 w-full"></div>
-      </div>
-      <div className="flex w-full flex-col gap-4">
-        <div className="skeleton w-full h-4 "></div>
-        <div className="skeleton w-5/6 h-4 "></div>
-        <div className="skeleton w-3/4 h-4 "></div>
-        <div className="skeleton w-5/6 h-4 "></div>
-        <div className="skeleton w-full h-4 mb-5"></div>
+    <PageWrapper className="px-0 pt-15 mb-3">
+      <div className="w-full max-w-5xl h-screen flex flex-col justify-start gap-5 items-center">
+        <div className="flex w-full flex-col gap-4">
+          <div className="skeleton h-150 w-full"></div>
+        </div>
+        <div className="flex w-full flex-col gap-4">
+          <div className="skeleton w-full h-4 "></div>
+          <div className="skeleton w-5/6 h-4 "></div>
+          <div className="skeleton w-3/4 h-4 "></div>
+          <div className="skeleton w-5/6 h-4 "></div>
+          <div className="skeleton w-full h-4 mb-5"></div>
 
-        <div className="skeleton w-full h-4 "></div>
-        <div className="skeleton w-5/6 h-4 "></div>
-        <div className="skeleton w-full h-4 "></div>
-        <div className="skeleton w-1/2 h-4"></div>
+          <div className="skeleton w-full h-4 "></div>
+          <div className="skeleton w-5/6 h-4 "></div>
+          <div className="skeleton w-full h-4 "></div>
+          <div className="skeleton w-1/2 h-4"></div>
+        </div>
       </div>
-    </div>
+    </PageWrapper>
   );
 }
 
