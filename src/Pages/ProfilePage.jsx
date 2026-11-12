@@ -126,7 +126,7 @@ function ProfilePage() {
         </button>
         <div className="p-3 pt-0">
           <div className="grid md:grid-cols-2 grid-cols-1 gap-5">
-            <div className="z-10 w-full h-full flex justify-center items-center aspect-square overflow-hidden relative">
+            <div className="z-10 w-full h-full flex flex-col justify-center items-center aspect-square overflow-hidden relative">
               {imageSrc && (
                 <button
                   className="btn btn-circle boder-base-100 p-2 w-10 absolute right-5 top-5 z-20"
