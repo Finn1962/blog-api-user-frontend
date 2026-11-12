@@ -172,6 +172,18 @@ function ProfilePage() {
                   </svg>
                 </div>
               )}
+              {errors.some((error) => error.msg === "Image is too large") && (
+                <p className="text-error font-semibold self-start">
+                  Image is too large
+                </p>
+              )}
+              {errors.some(
+                (error) => error.msg === "Only image files are allowed",
+              ) && (
+                <p className="text-error font-semibold self-start">
+                  Only image files are allowed
+                </p>
+              )}
             </div>
             <div className="flex flex-col justify-between items-start gap-4">
               <div className="flex justify-between items-center w-full">
