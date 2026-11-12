@@ -41,11 +41,12 @@ function VerificationPage() {
       {isLoading && (
         <span className="loading loading-spinner loading-md"></span>
       )}
-      {!isLoading && errors?.length === 0 ? (
-        <h2 className="font-heading">Congratulations, you are verified.</h2>
-      ) : (
-        <h2 className="font-heading text-xl">Oops, something didn't work.</h2>
-      )}
+      {!isLoading &&
+        (errors?.length === 0 ? (
+          <h2 className="font-heading">Congratulations, you are verified.</h2>
+        ) : (
+          <h2 className="font-heading text-xl">Oops, something didn't work.</h2>
+        ))}
       {errors.some((error) => error.msg === "Invalid token") && (
         <p>Your token is invalid.</p>
       )}
