@@ -159,8 +159,6 @@ function PostPage() {
                     <Comment comment={comment} key={comment.id} />
                   ))}
 
-                {console.log(comments.length)}
-
                 {isPreview ||
                   (comments.length === 0 && (
                     <div className="w-full flex sm:flex-row flex-col gap-3 justify-center items-center">
