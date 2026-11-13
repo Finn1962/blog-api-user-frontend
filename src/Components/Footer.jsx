@@ -46,7 +46,7 @@ function Footer() {
               </a>
               <a
                 className="flex justify-center items-center gap-3 hover:opacity-80 no-underline transition-all "
-                href="https://github.com/Finn1962/blog-api-author-frontend"
+                href="https://github.com/Finn1962/blog-api-backend"
                 rel="noopener noreferrer"
                 target="_blank"
               >
