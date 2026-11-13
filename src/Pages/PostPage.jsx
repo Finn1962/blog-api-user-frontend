@@ -121,7 +121,7 @@ function PostPage() {
           </PageWrapper>
           <PageWrapper className="mb-14">
             <div className="w-full max-w-5xl flex flex-col gap-10">
-              <div className="flex gap-3">
+              <div className="flex flex-wrap gap-3">
                 {post.tags.map((tag) => {
                   return <Tag tag={tag} key={tag.id} />;
                 })}
