@@ -58,9 +58,9 @@ function HomePage() {
               .codersBlog
             </h1>
             <p className="py-6 font-light">
-              Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda
-              excepturi exercitationem quasi. In deleniti eaque aut repudiandae
-              et a id nisi.
+              Everything here revolves around programming. You’ll find a wide
+              range of exciting topics covering front-end, back-end, programming
+              languages, frameworks, and much more.
             </p>
             <button
               className="btn btn-primary font-heading"
