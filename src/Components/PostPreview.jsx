@@ -8,8 +8,8 @@ function PostPreview({ post }) {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    if (!post.image_url) return;
     setIsLoading(true); // eslint-disable-line
-    const controller = new AbortController();
     fetch(post.image_url)
       .then((response) => response.blob())
       .then((blob) => {
@@ -20,7 +20,6 @@ function PostPreview({ post }) {
       .finally(() => setIsLoading(false));
 
     return () => {
-      controller.abort();
       if (imageSrc) URL.revokeObjectURL(imageSrc);
     };
   }, [post.image_url]);
