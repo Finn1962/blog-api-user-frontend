@@ -116,7 +116,7 @@ function PostPage() {
                 </div>
               )
             ) : (
-              <div className="skeleton h-100 w-full max-w-5xl"></div>
+              <div className="skeleton h-125 w-full max-w-5xl"></div>
             )}
           </PageWrapper>
           <PageWrapper className="mb-14">
