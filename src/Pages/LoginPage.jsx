@@ -12,7 +12,7 @@ function Login() {
   const [searchParams] = useSearchParams();
   const redirect = searchParams.get("redirect");
 
-  const [emailValue, setEmailValue] = useState("");
+  const [usernameOrEmailValue, setUsernameOrEmailValue] = useState("");
   const [passwordValue, setPasswordValue] = useState("");
   const [error, setError] = useState("");
 
@@ -30,7 +30,7 @@ function Login() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          email: emailValue,
+          usernameOrEmail: usernameOrEmailValue,
           password: passwordValue,
         }),
       });
@@ -67,13 +67,15 @@ function Login() {
           <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
             <div className="card-body">
               <fieldset className="fieldset flex flex-col gap-2">
-                <label className="label">Email</label>
+                <label className="label">Username or email</label>
                 <input
-                  type="email"
+                  type="text"
                   className="input bg-base-200 w-full"
                   placeholder="john.doe@example.com"
-                  value={emailValue}
-                  onChange={(event) => setEmailValue(event.target.value)}
+                  value={usernameOrEmailValue}
+                  onChange={(event) =>
+                    setUsernameOrEmailValue(event.target.value)
+                  }
                   onKeyDown={(event) =>
                     event.key === "Enter" && sendLoginRequest()
                   }
