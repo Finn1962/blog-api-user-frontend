@@ -105,6 +105,13 @@ function RegisterPage() {
                     Email is already taken
                   </p>
                 )}
+                {errors.some(
+                  (error) => error.msg === "Invalid email address",
+                ) && (
+                  <p className="text-error font-semibold">
+                    A correct email format is required
+                  </p>
+                )}
                 {errors.some((error) => error.msg === "Email is required") && (
                   <p className="text-error font-semibold">Email is required</p>
                 )}
