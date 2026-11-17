@@ -18,6 +18,7 @@ function HomePage() {
 
   useEffect(() => {
     debounce(async () => {
+      setCurrentPaginationNumber(0);
       setIsLoading(true);
       try {
         setPosts(null);

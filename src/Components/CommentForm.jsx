@@ -4,6 +4,7 @@ import { useAuthFetch } from "../hooks/useAuthFetch";
 import { useCommentForm } from "../Contexts/CommentFormContext";
 
 function CommentForm({ postId, fetchComments }) {
+  const [isLoading, setIsLoading] = useState(false);
   const [commentValue, setCommentValue] = useState("");
   const [errors, setErrors] = useState([]);
   const { authFetch } = useAuthFetch();
@@ -14,6 +15,7 @@ function CommentForm({ postId, fetchComments }) {
     await authFetch({
       url: `${apiUrl}comment`,
       method: "POST",
+      setIsLoading: setIsLoading,
       body: {
         content: commentValue,
         postId,
@@ -62,10 +64,15 @@ function CommentForm({ postId, fetchComments }) {
             <p className="text-error font-semibold">Comment cannot be empty.</p>
           )}
           <button
+            disabled={isLoading}
             className="btn btn-primary mt-3 w-full"
             onClick={async () => uploadComment()}
           >
-            Post comment
+            {isLoading ? (
+              <span className="loading loading-spinner loading-xl"></span>
+            ) : (
+              "Post comment"
+            )}
           </button>
         </fieldset>
       </div>

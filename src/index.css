@@ -74,8 +74,10 @@
 }
 
 .content-container {
-  overflow-wrap: break-word; /* Bricht lange Wörter um */
-  word-break: break-word; /* Fallback für ältere Browser */
+  word-break: normal;
+  overflow-wrap: break-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
 }
 
 .content-container h1 {
@@ -135,4 +137,7 @@
 .syntax-highlighter .react-syntax-highlighter-line-number {
   color: var(--color-base-content) !important;
   opacity: 0.3;
+}
+
+.clean-running-text {
 }

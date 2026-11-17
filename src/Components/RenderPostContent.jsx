@@ -20,11 +20,25 @@ function RenderPostContent({ htmlContent, usedLanguage }) {
     C_SHARP: "csharp",
   };
 
+  const cleanedHtml = htmlContent
+    ? htmlContent.replace(
+        /(<pre[\s\S]*?<\/pre>)|(&nbsp;|\u00A0)/gi,
+        (match, preBlock) => {
+          return preBlock ? preBlock : " ";
+        },
+      )
+    : "";
+
   const options = {
     replace: (domNode) => {
       if (domNode.name === "pre") {
-        const codeText = domNode.children[0]?.data || "";
+        // Falls im Editor <code> innerhalb von <pre> liegt, wird beides sauber ausgelesen
+        const codeNode =
+          domNode.children?.find((child) => child.name === "code") ||
+          domNode.children?.[0];
+        const codeText = codeNode?.children?.[0]?.data || codeNode?.data || "";
         const cleanedCode = codeText.trim();
+
         return (
           <SyntaxHighlighter
             language={languages[usedLanguage]}
@@ -40,7 +54,11 @@ function RenderPostContent({ htmlContent, usedLanguage }) {
     },
   };
 
-  return <div>{parse(htmlContent ? htmlContent : "", options)}</div>;
+  return (
+    <div className="clean-running-text" lang="de">
+      {parse(cleanedHtml, options)}
+    </div>
+  );
 }
 
 export default RenderPostContent;
