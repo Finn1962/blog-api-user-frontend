@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useCommentForm } from "../Contexts/CommentFormContext";
 import { useAuthFetch } from "../hooks/useAuthFetch";
 
-function Comment({ comment }) {
+function Comment({ comment, commentIsLoading, setCommentIsLoading }) {
   const navigate = useNavigate();
   const { authFetch } = useAuthFetch();
   const { profile } = useProfile();
@@ -20,6 +20,7 @@ function Comment({ comment }) {
   function addLikeToComment() {
     authFetch({
       url: `${apiUrl}comment/like`,
+      setIsLoading: setCommentIsLoading,
       method: "POST",
       body: {
         commentId: comment.id,
@@ -40,6 +41,7 @@ function Comment({ comment }) {
     authFetch({
       url: `${apiUrl}comment/like/${comment.id}`,
       method: "DELETE",
+      setIsLoading: setCommentIsLoading,
       callback: (result) => {
         if (result.message === "Like removed") {
           setIsLiked(() => false);
@@ -61,6 +63,7 @@ function Comment({ comment }) {
       <p className="text-sm">{comment.content}</p>
       <div className="flex gap-2 w-full flex justify-between">
         <button
+          disabled={commentIsLoading}
           className="btn font-heading"
           onClick={() => {
             if (profile) {
@@ -77,6 +80,7 @@ function Comment({ comment }) {
         <div className="flex gap-2 items-center justify-center">
           <p>{likesCount}</p>
           <button
+            disabled={commentIsLoading}
             className="btn btn-circle"
             onClick={() => {
               if (profile) {

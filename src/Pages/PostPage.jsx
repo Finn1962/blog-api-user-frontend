@@ -14,6 +14,7 @@ import CommentForm from "../Components/CommentForm";
 function PostPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [imageIsLoading, setImageIsLoading] = useState(false);
+  const [commentIsLoading, setCommentIsLoading] = useState(false);
   const [imageSrc, setImageSrc] = useState(null);
   const [post, setPost] = useState(null);
   const [comments, setComments] = useState([]);
@@ -143,6 +144,7 @@ function PostPage() {
                   </h2>
                   <button
                     className="btn btn-primary font-heading"
+                    disabled={commentIsLoading}
                     onClick={() => {
                       if (isPreview) return;
                       !profile
@@ -154,12 +156,16 @@ function PostPage() {
                     Add Comment
                   </button>
                 </div>
+
                 {!isPreview &&
                   comments.map((comment) => (
-                    <Comment comment={comment} key={comment.id} />
+                    <Comment
+                      comment={comment}
+                      key={comment.id}
+                      commentIsLoading={commentIsLoading}
+                      setCommentIsLoading={setCommentIsLoading}
+                    />
                   ))}
-
-                {console.log(comments.length)}
 
                 {isPreview ||
                   (comments.length === 0 && (
