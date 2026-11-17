@@ -1,7 +1,13 @@
 import { useNavigate } from "react-router-dom";
 import { useScroll } from "../hooks/useScroll.js";
 
-function SideBar({ className, searchValue, setSearchValue, posts }) {
+function SideBar({
+  className,
+  searchValue,
+  setSearchValue,
+  posts,
+  setCurrentPaginationNumber,
+}) {
   const { scrollDirection } = useScroll();
 
   return (
@@ -39,7 +45,10 @@ function SideBar({ className, searchValue, setSearchValue, posts }) {
             type="text"
             placeholder="Search"
             value={searchValue}
-            onChange={(event) => setSearchValue(event.target.value)}
+            onChange={(event) => {
+              setSearchValue(event.target.value);
+              setCurrentPaginationNumber(0);
+            }}
           />
         </label>
       </fieldset>
