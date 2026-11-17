@@ -57,6 +57,7 @@ function SideBar({
         <Tags
           searchValue={searchValue}
           setSearchValue={setSearchValue}
+          setCurrentPaginationNumber={setCurrentPaginationNumber}
           values={[
             "Javascript",
             "HTML",
@@ -78,6 +79,7 @@ function SideBar({
       <ResetButton
         className="lg:inline-flex hidden mt-2"
         setSearchValue={setSearchValue}
+        setCurrentPaginationNumber={setCurrentPaginationNumber}
       />
     </aside>
   );
@@ -124,11 +126,18 @@ function RandomButton({ className, posts }) {
   );
 }
 
-function ResetButton({ className, setSearchValue }) {
+function ResetButton({
+  className,
+  setSearchValue,
+  setCurrentPaginationNumber,
+}) {
   return (
     <button
       className={`btn btn-primary  font-heading ${className}`}
-      onClick={() => setSearchValue("")}
+      onClick={() => {
+        setSearchValue("");
+        setCurrentPaginationNumber(0);
+      }}
     >
       Reset search
       <svg
@@ -165,13 +174,19 @@ function ResetButton({ className, setSearchValue }) {
   );
 }
 
-function Tags({ searchValue, setSearchValue, values }) {
+function Tags({
+  searchValue,
+  setSearchValue,
+  values,
+  setCurrentPaginationNumber,
+}) {
   return values.map((value, index) => (
     <button
       className={`btn ${value === searchValue ? "btn-primary" : ""} font-heading`}
-      onClick={() =>
-        value === searchValue ? setSearchValue("") : setSearchValue(value)
-      }
+      onClick={() => {
+        value === searchValue ? setSearchValue("") : setSearchValue(value);
+        setCurrentPaginationNumber(0);
+      }}
       key={index}
     >
       {value}
