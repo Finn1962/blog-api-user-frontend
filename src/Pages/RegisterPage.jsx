@@ -61,8 +61,7 @@ function RegisterPage() {
             <div className="card-body">
               {registrationSuccess && (
                 <p className="text-success font-semibold">
-                  Registration successful! You will receive a confirmation email
-                  shortly.
+                  Registration successful! You can login now.
                 </p>
               )}
               <fieldset className="fieldset flex flex-col gap-2">
