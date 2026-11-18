@@ -104,21 +104,12 @@ function Login() {
                 {error !== "" && (
                   <p className="text-error font-bold mt-1">{error}</p>
                 )}
-                <div className="flex flex-col sm:flex-row justify-start items-start sm:items-center gap-0 sm:gap-2 mt-2">
-                  <Link
-                    to="/reset-password"
-                    className="link link-hover opacity-70 hover:opacity-100 transition-all "
-                  >
-                    Forgot your password
-                  </Link>
-                  <span>or</span>
-                  <Link
-                    to="/register"
-                    className="link link-hover opacity-70 hover:opacity-100 transition-all "
-                  >
-                    Don't have an account?
-                  </Link>
-                </div>
+                <Link
+                  to="/register"
+                  className="link link-hover opacity-70 hover:opacity-100 transition-all mt-1"
+                >
+                  Don't have an account?
+                </Link>
               </fieldset>
             </div>
           </div>

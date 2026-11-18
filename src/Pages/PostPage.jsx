@@ -1,5 +1,6 @@
 const apiUrl = import.meta.env.VITE_API_URL;
 import cupImage from "../assets/cup.svg";
+import { useAuthFetch } from "../hooks/useAuthFetch";
 import { useEffect, useState } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
 import { useProfile } from "../Contexts/ProfileContext";
@@ -30,6 +31,7 @@ function PostPage() {
     setIsCommentFormVisible,
     setIsResponseComment,
   } = useCommentForm();
+  const { authFetch } = useAuthFetch();
 
   useEffect(() => {
     window.scrollTo({
@@ -37,27 +39,20 @@ function PostPage() {
       behavior: "instant",
     });
 
-    (async () => {
-      setIsLoading(true);
-      try {
-        const url = isPreview
-          ? `${apiUrl}post/${id}?isPreview=${isPreview}`
-          : `${apiUrl}post/${id}`;
-        const response = await fetch(url, {
-          method: "GET",
-          credentials: "include",
-        });
-        const result = await response.json();
+    const url = isPreview
+      ? `${apiUrl}post/${id}?isPreview=${isPreview}`
+      : `${apiUrl}post/${id}`;
+    authFetch({
+      url,
+      setIsLoading: setIsLoading,
+      callback: (result) => {
         if (result.message === "No authorization")
           navigate(`/login?redirect=${pathname + queryParams}`);
         setPost(result.post);
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setIsLoading(false);
-      }
-      fetchComments();
-    })();
+      },
+    });
+
+    fetchComments();
   }, []);
 
   useEffect(() => {
@@ -89,7 +84,7 @@ function PostPage() {
 
   return (
     <>
-      {isLoading && <Skeleton />}
+      {isLoading && <PostSkeleton />}
       {post && (
         <>
           {isCommentFormVisible && (
@@ -158,6 +153,7 @@ function PostPage() {
                 </div>
 
                 {!isPreview &&
+                  !commentIsLoading &&
                   comments.map((comment) => (
                     <Comment
                       comment={comment}
@@ -166,6 +162,8 @@ function PostPage() {
                       setCommentIsLoading={setCommentIsLoading}
                     />
                   ))}
+
+                {commentIsLoading && <CommentSkeleton />}
 
                 {isPreview ||
                   (comments.length === 0 && (
@@ -183,7 +181,7 @@ function PostPage() {
   );
 }
 
-function Skeleton() {
+function PostSkeleton() {
   return (
     <PageWrapper className="px-0 pt-15 mb-3">
       <div className="w-full max-w-5xl h-screen flex flex-col justify-start gap-5 items-center">
@@ -203,6 +201,16 @@ function Skeleton() {
         </div>
       </div>
     </PageWrapper>
+  );
+}
+
+function CommentSkeleton() {
+  return (
+    <div className="flex flex-col justify-center align-center gap-3 ">
+      <div className="skeleton h-40 w-full"></div>
+      <div className="skeleton h-40 w-full"></div>
+      <div className="skeleton h-40 w-full"></div>
+    </div>
   );
 }
 
