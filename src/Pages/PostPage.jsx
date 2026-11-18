@@ -152,18 +152,20 @@ function PostPage() {
                   </button>
                 </div>
 
-                {!isPreview &&
-                  !commentIsLoading &&
-                  comments.map((comment) => (
-                    <Comment
-                      comment={comment}
-                      key={comment.id}
-                      commentIsLoading={commentIsLoading}
-                      setCommentIsLoading={setCommentIsLoading}
-                    />
-                  ))}
-
-                {commentIsLoading && <CommentSkeleton />}
+                <div className="relative flex flex-col gap-5">
+                  {commentIsLoading && (
+                    <span className="loading loading-spinner loading-xl sticky -mt-13 top-30 left-1/2 -translate-x-1/2 translate-y-28"></span>
+                  )}
+                  {!isPreview &&
+                    comments.map((comment) => (
+                      <Comment
+                        comment={comment}
+                        key={comment.id}
+                        commentIsLoading={commentIsLoading}
+                        setCommentIsLoading={setCommentIsLoading}
+                      />
+                    ))}
+                </div>
 
                 {isPreview ||
                   (comments.length === 0 && (
@@ -201,16 +203,6 @@ function PostSkeleton() {
         </div>
       </div>
     </PageWrapper>
-  );
-}
-
-function CommentSkeleton() {
-  return (
-    <div className="flex flex-col justify-center align-center gap-3 ">
-      <div className="skeleton h-40 w-full"></div>
-      <div className="skeleton h-40 w-full"></div>
-      <div className="skeleton h-40 w-full"></div>
-    </div>
   );
 }
 
